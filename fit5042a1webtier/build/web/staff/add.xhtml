@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"></h:outputStylesheet>
+        <title>Add heritage</title>
+    </h:head>
+    <h:body>
+        <div>
+            <div class="navbar navbar-inverse">
+                <div class="navbar-brand">
+                    Add Heritage
+                </div>
+            </div>
+            <div>
+                <f:view>
+                    <h:form>
+                        <h1> <h:outputText value="Create" /> </h1>
+                        <table class="table table-bordered" >
+                            
+                            <tr>
+                                <td>
+                                    <h:outputLabel value="heritageName" for="heritageName" >
+                                        
+                                    </h:outputLabel>
+                                </td>
+
+                                <td>
+                                    <h:inputText id="heritageName" required="true" requiredMessage="You must enter a heritage name!" 
+                                                 validatorMessage="the name should between 1 - 10 characters!" value="#{heritage.heritageName}" title="heritageName" >
+                                        <f:validateLength minimum="1" maximum="10" />
+                                    </h:inputText> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputLabel value="herigateDescrip" for="herigateDescrip" /> 
+                                </td>
+                                <td>
+                                    <h:inputText id="herigateDescrip" required="true" requiredMessage="You must enter a heritage description!" 
+                                                 validatorMessage="the name should be no more than 250 characters!" value="#{heritage.herigateDescrip}" title="herigateDescrip" >
+                                        <f:validateLength maximum="250" />
+                                    </h:inputText> 
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <h:outputLabel value="years" for="years" /> 
+                                </td>
+                                <td>
+                                    <h:inputText id="herigateYears" required="true" requiredMessage="You must enter a heritage description!" 
+                                                 validatorMessage="you should enter a year!" value="#{heritage.years}" title="years" >
+                                        <f:validateLongRange maximum="9999" minimum="1"/>
+                                    </h:inputText> 
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td> Researcher: </td>
+                                <td>
+                                    <h:selectOneMenu id="researcher" value="#{heritage.researcher}" converter="researcher">
+                                        <f:selectItem itemValue="#{null}" itemLabel="--select--" />
+                                        <f:selectItems value="#{heritageManagedBean.allResearcher}" var="r"
+                                                       itemLabel="#{r.researcherName}" itemValue="#{r}" />
+                                    </h:selectOneMenu>
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                        <h:commandButton id="Submit" value="Submit" action="#{heritageManagedBean.addHeritage(heritage)}" class="btn btn-primary" >
+                        </h:commandButton>
+                        <h:commandButton id="Close" value="Home Page" action="staff.xhtml" class="btn btn-primary" > </h:commandButton>
+                    </h:form>
+                </f:view>
+            </div>
+        </div>
+    </h:body>
+</html>

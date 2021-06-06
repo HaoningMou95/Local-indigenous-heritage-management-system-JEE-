@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"      
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"></h:outputStylesheet>
+        <title>#{heritageManagedBean.name}</title> 
+    </h:head>
+
+    <h:body>
+        <div>
+            <ul class="nav nav-pills">
+                <li class="active">
+                    <a href="../faces/welcome.xhtml">Welcome page</a>
+                </li>
+                <li><a href="../faces/welcome.xhtml">Log out</a></li>
+            </ul>
+        </div>
+        <div class="container">
+            <div class="navbar navbar-inverse"> 
+                <div class="navbar-brand">
+                    Heritage  List
+                </div>
+            </div>
+
+            <h:form id="MyForm">
+                <table class="table table-stripped table-stripped">
+                    <tr>
+                        <td>
+                            <h:outputLabel id="Id" value="id"/>
+                        </td>
+
+                        <td>
+                            <h:outputLabel id="Name" value="Name"/>
+                        </td>
+
+                        <td>
+                            <h:outputLabel id="Description" value="Description"> </h:outputLabel>
+                        </td>
+                    </tr>
+                    <ui:repeat id="MyRepeat" value="#{heritageApplication.heritages}" var="heritage" varStatus="status">
+                        <!--<tr onclick="document.getElementById('MyForm:selectedId').value = document.getElementById('MyForm:Myrepeat:#{status.index}:MainPropertyID').textContent;">--> 
+
+                        <tr> 
+                            <td>
+
+                                <h:outputText value="#{heritageApplication.heritages.get(status.index).heritageID}" id="heriitageID"/>
+                            </td>
+
+                            <td>
+                                <h:outputText id="outName" value="#{heritageApplication.heritages.get(status.index).heritageName}"/>
+                            </td>
+
+                            <td>
+                                <h:outputText id="outDescription" value="#{heritageApplication.heritages.get(status.index).herigateDescrip}" />
+                            </td>
+
+                            <td>
+                                <h:commandLink value="View | " action="detail.xhtml">                  
+                                    <f:param name="heritageID" value="#{status.index+1}"/>
+                                </h:commandLink>
+
+                                <h:commandLink value="Edit | " action="edit.xhtml">
+                                    <f:param name="heritageID" value="#{status.index+1}"/>
+                                </h:commandLink>
+
+                                <h:commandLink value="Delete" action="#{heritageManagedBean.deleteHeritage(heritageApplication.heritages.get(status.index).heritageID)}">
+                                </h:commandLink>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+
+                </table>
+
+                <div>
+                    <h:commandButton id="add" value="Add" action ="add.xhtml" class="btn btn-primary" />
+                    <h:commandButton id="viewAll" value="View All" action="#{heritageApplication.searchAll()}" class="btn btn-primary" >
+                        <f:param name="propertyID" value="#{status.index + 1}"/>
+                    </h:commandButton>
+                </div>
+                <div>
+                    <h:inputText value="#{heritageManagedBean.searchById}" alt="1" validatorMessage="You must enter digits to search heritage ID! and no more than #{heritageManagedBean.allHeritages.size()}" 
+                                 id="serchByID" required="true" >
+                        <f:validateLongRange maximum="#{heritageManagedBean.allHeritages.size()}" minimum="1">
+                        </f:validateLongRange>
+                    </h:inputText>
+                    <h:commandButton id="searchID" value="Search by id" action="#{heritageApplication.searchHeritageByID(heritageManagedBean.searchById)}" class="btn btn-primary" 
+                                     onchange ="if (document.getElementById('MyForm:searchById').value.trim() == '') {
+                                                 document.getElementById('MyForm:searchById').value = 0;
+                                             }
+                                     ">
+                        <f:param name="heritageID" value="#{status.index + 1}" />
+                    </h:commandButton>
+
+
+                </div>
+
+                <div>
+                    <h:form>
+                        <h:selectOneMenu id="researcherId" value="#{heritageApplication.researcherId}" >
+                            <f:selectItem itemValue="#{null}" itemLabel="--select--" />
+                            <f:selectItems value="#{heritageManagedBean.allResearcher}" var="r"
+                                           itemLabel="#{r.researcherName}" itemValue="#{r.researcherID}" />
+                        </h:selectOneMenu>
+
+                        <h:commandButton id="searchByresearcherId" value="Search by researcher" action="#{heritageApplication.searchPropertyByResearcherId(heritageApplication.researcherId)}" class="btn btn-primary" >
+                            <f:param name="heritageID" value="#{status.index + 1}"/>
+                        </h:commandButton>
+
+
+                    </h:form>
+
+                </div>
+
+                <div>
+                    <h:form>
+                        <h:inputText value="#{heritageApplication.years}" id="searchByYears" />
+                        <h:commandButton id="searchYears" value="Search by years" action="#{heritageApplication.searchHeritagesByYears(heritageApplication.years)}" class="btn btn-primary" >
+                            <f:param name="heritageID" value="#{status.index + 1}" />
+                        </h:commandButton>
+                    </h:form>
+
+                </div>
+
+
+
+
+            </h:form>
+
+        </div>
+
+
+
+
+
+
+    </h:body>
+</html>
+
